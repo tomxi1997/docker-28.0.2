@@ -86,48 +86,6 @@ jobs:
         mkdir -p src/github.com/containerd
         mv containerd src/github.com/containerd/
         cd src/github.com/containerd/containerd
-        go mod init github.com/containerd/containerd
-        #go mod vendor
-        #go mod tidy
-        go get github.com/containerd/containerd
-        go get github.com/containerd/containerd/api/events
-        go get github.com/containerd/containerd/api/services/introspection/v1
-        go get github.com/containerd/containerd/api/services/ttrpc/events/v1
-        go get github.com/containerd/containerd/archive
-        go get github.com/containerd/containerd/cio
-        go get github.com/containerd/containerd/cmd/containerd
-        go get github.com/containerd/containerd/cmd/containerd-shim
-        go get github.com/containerd/containerd/cmd/containerd-stress
-        go get github.com/containerd/containerd/cmd/ctr/commands
-        go get github.com/containerd/containerd/cmd/ctr/commands/content
-        go get github.com/containerd/containerd/cmd/ctr/commands/run
-        go get github.com/containerd/containerd/cmd/ctr/commands/tasks
-        go get github.com/containerd/containerd/cmd/protoc-gen-gogoctrd
-        go get github.com/containerd/containerd/content/testsuite
-        go get github.com/containerd/containerd/diff/lcow
-        go get github.com/containerd/containerd/events/exchange
-        go get github.com/containerd/containerd/leases
-        go get github.com/containerd/containerd/metadata
-        go get github.com/containerd/containerd/metrics/cgroups
-        go get github.com/containerd/containerd/metrics/cgroups/v1
-        go get github.com/containerd/containerd/oci
-        go get github.com/containerd/containerd/pkg/oom/v2
-        go get github.com/containerd/containerd/pkg/process
-        go get github.com/containerd/containerd/remotes/docker
-        go get github.com/containerd/containerd/services/healthcheck
-        go get github.com/containerd/containerd/services/introspection
-        go get github.com/containerd/containerd/services/server
-        go get github.com/containerd/containerd/services/server/config
-        go get github.com/containerd/containerd/snapshots/btrfs
-        go get github.com/containerd/containerd/snapshots/lcow
-        go get github.com/containerd/containerd/snapshots/testsuite
-        go get github.com/containerd/containerd/snapshots/windows
-        go get -t github.com/containerd/containerd
-        go get -t github.com/containerd/containerd/cio
-        go get -t github.com/containerd/containerd/mount
-        go get -t github.com/containerd/containerd/snapshots/storage
-        go get github.com/containerd/containerd
-        go mod vendor
         SHIM_CGO_ENABLED=1 make BUILDTAGS="netgo osusergo no_btrfs static_build" EXTRA_FLAGS="-buildmode pie" EXTRA_LDFLAGS="-linkmode external -extldflags -fno-PIC -static" -j6 
         DESTDIR=$PREFIX sudo make install
 
@@ -137,7 +95,7 @@ jobs:
 
     - name: add docker tar
       run: |
-        sudo bash -c 'cd /data && tar -czvf docker.tar.xz docker && cp docker.tar.xz /home/runner/work/builder-docker/builder-docker/kernel_workspace'
+        sudo bash -c 'cd /data && tar -czvf docker.tar.xz docker && cp docker.tar.xz home/runner/work/docker-28.0.2/docker-28.0.2/kernel_workspace'
     
 
     - name: Upload docker binary
