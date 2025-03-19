@@ -70,7 +70,13 @@ jobs:
         make -j6
         sudo install -Dm 0700 ./tini-static $PREFIX/bin/docker-init
 
-   - name: build static runc                                                       run: |                                                                                                                                                         cd $GITHUB_WORKSPACE/kernel_workspace/docker                                  export PREFIX=/data/docker                                                    cd runc                                                                       make static                                                                   sudo install -Dm 0700 ./runc $PREFIX/bin/runc
+    - name: build static runc
+      run: |                                                                                                                                                        
+        cd $GITHUB_WORKSPACE/kernel_workspace/docker                                  
+        export PREFIX=/data/docker                                                   
+        cd runc                                                                       
+        make static                                                                  
+        sudo install -Dm 0700 ./runc $PREFIX/bin/runc
 
 
     - name: build static containerd
