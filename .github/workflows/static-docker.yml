@@ -83,7 +83,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/docker
         export PREFIX=/data/docker
-        mkdir src/github.com/containerd
+        mkdir -p src/github.com/containerd
         mv containerd src/github.com/containerd/
         cd src/github.com/containerd/containerd
         go mod init github.com/containerd/containerd
