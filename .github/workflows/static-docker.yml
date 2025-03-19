@@ -1,0 +1,164 @@
+name: Build static docker
+on:
+  watch:
+    types: [started]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build static docker by ${{ github.actor }}
+    runs-on: ubuntu-24.04-arm
+    if: github.event.repository.owner.id == github.event.sender.id
+    env:
+      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
+      CCACHE_NOHASHDIR: "true"
+      CCACHE_HARDLINK: "true"
+      CI: "false"
+    steps:
+    - uses: actions/checkout@v4
+    - name: Prepare Configuration
+      run: |
+        echo "ENABLE_NETHUNTER=$(cat $CONFIG_ENV | grep -w "ENABLE_NETHUNTER" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        
+    - name: Set swap to 10G
+      uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 10
+
+    - name: Setup build environment
+      run: |
+        echo "BUILD_TIME=$(TZ=Asia/Shanghai date "+%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "DEVICE=$(echo ${{ env.KERNEL_CONFIG }} | sed 's!vendor/!!;s/_defconfig//;s/_user//;s/-perf//')" >> $GITHUB_ENV
+        sudo apt-get update
+        sudo apt install -y curl vim git gcc clang crossbuild-essential-arm64 golang git libseccomp-dev cmake
+        mkdir -p $GITHUB_WORKSPACE/kernel_workspace
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        git clone https://github.com/tomxi1997/docker-28.0.2.git docker
+
+  
+
+    - name: build static docker-cli 
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/docker
+        export PREFIX=/data/docker
+        cd cli
+        docker buildx bake --set binary.platform=linux/arm64 
+        sudo install -Dm 0700 build/docker-linux-arm64 $PREFIX/bin/docker
+        
+          
+        
+
+    - name: build static docker demon
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/docker
+        export PREFIX=/data/docker
+        cd moby
+        make binary 
+        sudo install -Dm 0700 bundles/binary-daemon/dockerd-dev $PREFIX/bin/dockerd-dev
+        sudo install -Dm 0700 bundles/binary-daemon/docker-proxy $PREFIX/bin/docker-proxy
+        #sudo install -Dm 0700 bundles/binary-daemon/docker-init $PREFIX/bin/docker-init
+      
+
+
+
+    - name: build static libnetwork
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/docker
+        export PREFIX=/data/docker
+        mkdir -p src/github.com/docker
+        mv libnetwork src/github.com/docker/libnetwork
+        cd src/github.com/docker/libnetwork
+        #go mod init github.com/docker/libnetwork
+        #go mod init github.com/docker/libnetwork/cmd/proxy
+       # go mod vendor
+       # go mod tidy
+        #CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' -o docker-proxy github.com/docker/libnetwork/cmd/proxy
+       # sudo install -Dm 0700 docker-proxy $PREFIX/bin/docker-proxy
+        
+        
+
+    - name: build static tini
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/docker
+        export PREFIX=/data/docker
+        cd tini
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX
+        make -j6
+        sudo install -Dm 0700 ./tini-static $PREFIX/bin/docker-init
+
+
+    - name: build static containerd
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/docker
+        export PREFIX=/data/docker
+        mkdir src/github.com/containerd
+        mv containerd src/github.com/containerd/
+        cd src/github.com/containerd/containerd
+        go mod init github.com/containerd/containerd
+        #go mod vendor
+        #go mod tidy
+        go get github.com/containerd/containerd
+        go get github.com/containerd/containerd/api/events
+        go get github.com/containerd/containerd/api/services/introspection/v1
+        go get github.com/containerd/containerd/api/services/ttrpc/events/v1
+        go get github.com/containerd/containerd/archive
+        go get github.com/containerd/containerd/cio
+        go get github.com/containerd/containerd/cmd/containerd
+        go get github.com/containerd/containerd/cmd/containerd-shim
+        go get github.com/containerd/containerd/cmd/containerd-stress
+        go get github.com/containerd/containerd/cmd/ctr/commands
+        go get github.com/containerd/containerd/cmd/ctr/commands/content
+        go get github.com/containerd/containerd/cmd/ctr/commands/run
+        go get github.com/containerd/containerd/cmd/ctr/commands/tasks
+        go get github.com/containerd/containerd/cmd/protoc-gen-gogoctrd
+        go get github.com/containerd/containerd/content/testsuite
+        go get github.com/containerd/containerd/diff/lcow
+        go get github.com/containerd/containerd/events/exchange
+        go get github.com/containerd/containerd/leases
+        go get github.com/containerd/containerd/metadata
+        go get github.com/containerd/containerd/metrics/cgroups
+        go get github.com/containerd/containerd/metrics/cgroups/v1
+        go get github.com/containerd/containerd/oci
+        go get github.com/containerd/containerd/pkg/oom/v2
+        go get github.com/containerd/containerd/pkg/process
+        go get github.com/containerd/containerd/remotes/docker
+        go get github.com/containerd/containerd/services/healthcheck
+        go get github.com/containerd/containerd/services/introspection
+        go get github.com/containerd/containerd/services/server
+        go get github.com/containerd/containerd/services/server/config
+        go get github.com/containerd/containerd/snapshots/btrfs
+        go get github.com/containerd/containerd/snapshots/lcow
+        go get github.com/containerd/containerd/snapshots/testsuite
+        go get github.com/containerd/containerd/snapshots/windows
+        go get -t github.com/containerd/containerd
+        go get -t github.com/containerd/containerd/cio
+        go get -t github.com/containerd/containerd/mount
+        go get -t github.com/containerd/containerd/snapshots/storage
+        go get github.com/containerd/containerd
+        go mod vendor
+        SHIM_CGO_ENABLED=1 make BUILDTAGS="netgo osusergo no_btrfs static_build" EXTRA_FLAGS="-buildmode pie" EXTRA_LDFLAGS="-linkmode external -extldflags -fno-PIC -static" -j6 
+        DESTDIR=$PREFIX sudo make install
+
+
+
+    - name: build static runc
+      run: |                                                                                                 
+         cd $GITHUB_WORKSPACE/kernel_workspace/docker
+         export PREFIX=/data/docker
+         cd runc
+         make static
+         sudo install -Dm 0700 ./runc $PREFIX/bin/runc
+
+    - name: add docker tar
+      run: |
+        sudo bash -c 'cd /data && tar -czvf docker.tar.xz docker && cp docker.tar.xz /home/runner/work/builder-docker/builder-docker/kernel_workspace'
+    
+
+    - name: Upload docker binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-arm64
+        path: kernel_workspace/docker.tar.xz
+
+  
