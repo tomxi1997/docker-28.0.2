@@ -95,7 +95,7 @@ jobs:
 
     - name: add docker tar
       run: |
-        sudo bash -c 'cd /data && tar -czvf docker.tar.xz docker && cp docker.tar.xz home/runner/work/docker-28.0.2/docker-28.0.2/kernel_workspace'
+        sudo bash -c 'cd /data && tar -czvf docker.tar.xz docker && cp docker.tar.xz /home/runner/work/docker-28.0.2/docker-28.0.2/kernel_workspace'
     
 
     - name: Upload docker binary
