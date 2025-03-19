@@ -86,7 +86,7 @@ jobs:
         mkdir -p src/github.com/containerd
         mv containerd src/github.com/containerd/
         cd src/github.com/containerd/containerd
-        SHIM_CGO_ENABLED=1 make BUILDTAGS="netgo osusergo no_btrfs static_build" EXTRA_FLAGS="-buildmode pie" EXTRA_LDFLAGS="-linkmode external -extldflags -fno-PIC -static" -j6 
+        make STATIC=1
         DESTDIR=$PREFIX sudo make install
 
 
