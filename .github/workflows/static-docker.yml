@@ -59,25 +59,7 @@ jobs:
         #sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary-daemon/dockerd-dev $PREFIX/bin/dockerd-dev
         #sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary-daemon/docker-proxy $PREFIX/bin/docker-proxy
         #sudo install -Dm 0700 bundles/binary-daemon/docker-init $PREFIX/bin/docker-init
-      
-
-
-
-    - name: build static libnetwork
-      run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace/docker
-        export PREFIX=/data/docker
-        mkdir -p src/github.com/docker
-        mv libnetwork src/github.com/docker/libnetwork
-        cd src/github.com/docker/libnetwork
-        #go mod init github.com/docker/libnetwork
-        #go mod init github.com/docker/libnetwork/cmd/proxy
-       # go mod vendor
-       # go mod tidy
-        #CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' -o docker-proxy github.com/docker/libnetwork/cmd/proxy
-       # sudo install -Dm 0700 docker-proxy $PREFIX/bin/docker-proxy
-        
-        
+       
 
     - name: build static tini
       run: |
