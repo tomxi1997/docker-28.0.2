@@ -57,7 +57,7 @@ jobs:
         make binary
         ls $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary
         #sudo cp $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/* /data/docker/bin/
-        sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/dockerd $PREFIX/bin/dockerd-dev
+        sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/dockerd $PREFIX/libexec/dockerd-dev
         sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/docker-proxy $PREFIX/bin/docker-proxy
         #sudo install -Dm 0700 bundles/binary-daemon/docker-init $PREFIX/bin/docker-init
        
