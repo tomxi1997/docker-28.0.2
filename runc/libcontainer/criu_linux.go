@@ -160,7 +160,7 @@ func (c *Container) handleCriuConfigurationFile(rpcOpts *criurpc.CriuOpts) {
 	} else {
 		// If the mentioned annotation has not been found, specify
 		// a default CRIU configuration file.
-		rpcOpts.ConfigFile = proto.String("/etc/criu/runc.conf")
+		rpcOpts.ConfigFile = proto.String("/data/docker/etc/criu/runc.conf")
 	}
 }
 
