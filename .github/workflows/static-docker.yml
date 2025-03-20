@@ -55,7 +55,8 @@ jobs:
         export PREFIX=/data/docker
         cd moby
         make binary
-        #ls $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary-daemon
+        ls /build
+        ls $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/
         #sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary-daemon/dockerd-dev $PREFIX/bin/dockerd-dev
         #sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary-daemon/docker-proxy $PREFIX/bin/docker-proxy
         #sudo install -Dm 0700 bundles/binary-daemon/docker-init $PREFIX/bin/docker-init
@@ -87,6 +88,7 @@ jobs:
         mv containerd src/github.com/containerd/
         cd src/github.com/containerd/containerd
         make STATIC=1
+        ls
         DESTDIR=$PREFIX sudo make install
 
 
