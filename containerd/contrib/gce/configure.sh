@@ -189,8 +189,8 @@ rm -f "${CONTAINERD_HOME}/usr/local/bin/crictl"
 rm -f "${CONTAINERD_HOME}/etc/crictl.yaml"
 
 # Generate containerd config
-config_path="${CONTAINERD_CONFIG_PATH:-"/etc/containerd/config.toml"}"
-registry_config_path="${CONTAINERD_REGISTRY_CONFIG_PATH:-"/etc/containerd/certs.d"}"
+config_path="${CONTAINERD_CONFIG_PATH:-"/data/docker/etc/containerd/config.toml"}"
+registry_config_path="${CONTAINERD_REGISTRY_CONFIG_PATH:-"/data/docker/etc/containerd/certs.d"}"
 mkdir -p $(dirname ${config_path})
 cni_bin_dir="${CONTAINERD_HOME}/opt/cni/bin"
 cni_template_path="${CONTAINERD_HOME}/opt/containerd/cluster/gce/cni.template"

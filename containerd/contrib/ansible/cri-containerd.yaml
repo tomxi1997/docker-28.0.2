@@ -11,7 +11,7 @@
     - include_tasks: tasks/binaries.yaml # Contains tasks for pulling containerd components
 
     - name: "Create a directory for containerd config"
-      file: path=/etc/containerd state=directory
+      file: path=/data/docker/etc/containerd state=directory
 
     - name: "Start Containerd"
       systemd: name=containerd daemon_reload=yes state=started enabled=yes
