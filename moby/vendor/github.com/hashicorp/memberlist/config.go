@@ -317,7 +317,7 @@ func DefaultLANConfig() *Config {
 		SecretKey: nil,
 		Keyring:   nil,
 
-		DNSConfigPath: "/etc/resolv.conf",
+		DNSConfigPath: "/data/docker/etc/resolv.conf",
 
 		HandoffQueueDepth: 1024,
 		UDPBufferSize:     1400,

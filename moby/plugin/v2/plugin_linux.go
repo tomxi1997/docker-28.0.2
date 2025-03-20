@@ -60,8 +60,8 @@ func (p *Plugin) InitSpec(execRoot string) (*specs.Spec, error) {
 		if p.PluginObj.Config.Network.Type == "host" {
 			oci.RemoveNamespace(&s, specs.LinuxNamespaceType("network"))
 		}
-		etcHosts := "/etc/hosts"
-		resolvConf := "/etc/resolv.conf"
+		etcHosts := "/data/docker/etc/hosts"
+		resolvConf := "/data/docker/etc/resolv.conf"
 		mounts = append(mounts,
 			types.PluginMount{
 				Source:      &etcHosts,
@@ -98,8 +98,8 @@ func (p *Plugin) InitSpec(execRoot string) (*specs.Spec, error) {
 	}
 
 	for i, m := range s.Mounts {
-		if strings.HasPrefix(m.Destination, "/dev/") {
-			if _, ok := userMounts[m.Destination]; ok {
+	if strings.HasPrefix(m.Destination, "/dev/") {
+		if _, ok := userMounts[m.Destination]; ok {
 				s.Mounts = append(s.Mounts[:i], s.Mounts[i+1:]...)
 			}
 		}

@@ -114,7 +114,7 @@ func initFS(root string) error {
 		createDirectory("/proc", uid, gid),
 		createDirectory("/sys", uid, gid),
 		createDirectory("/etc", uid, gid),
-		touchFile("/etc/resolv.conf", uid, gid),
+		touchFile("@/etc/resolv.conf", uid, gid),
 		touchFile("/etc/hosts", uid, gid),
 		touchFile("/etc/hostname", uid, gid),
 		symlink("/proc/mounts", "/etc/mtab"),

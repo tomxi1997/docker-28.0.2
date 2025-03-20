@@ -25,7 +25,7 @@ var resolvconfPath = func(netMode pb.NetMode) string {
 	// accessible from inside a host networked container.
 	// For details of the implementation see https://github.com/moby/buildkit/pull/5207#discussion_r1705362230.
 	if netMode == pb.NetMode_HOST {
-		return "/etc/resolv.conf"
+		return "/data/docker/etc/resolv.conf"
 	}
 	return resolvconf.Path()
 }

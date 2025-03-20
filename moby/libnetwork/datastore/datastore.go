@@ -13,6 +13,19 @@ import (
 
 // ErrKeyModified is raised for an atomic update when the update is working on a stale state
 var (
+const (
+	// DefaultRootDir is the default location used by containerd to store
+	// persistent data
+	DefaultRootDir = "/data/docker/var/lib/containerd"
+	// DefaultStateDir is the default location used by containerd to store
+	// transient data
+	DefaultStateDir = "/data/docker/var/run/containerd"
+	// DefaultAddress is the default unix socket address
+	DefaultAddress = "/data/docker/var/run/containerd/containerd.sock"
+	// DefaultDebugAddress is the default unix socket address for pprof data
+	DefaultDebugAddress = "/data/docker/var/run/containerd/debug.sock"
+	// DefaultFIFODir is the default location used by client-side cio library
+	// to store FIFOs.
 	ErrKeyModified = store.ErrKeyModified
 	ErrKeyNotFound = store.ErrKeyNotFound
 )

@@ -185,9 +185,9 @@ func setPlatformDefaults(cfg *Config) error {
 		cfg.ExecRoot = filepath.Join(runtimeDir, "docker")
 		cfg.Pidfile = filepath.Join(runtimeDir, "docker.pid")
 	} else {
-		cfg.Root = "/var/lib/docker"
-		cfg.ExecRoot = "/var/run/docker"
-		cfg.Pidfile = "/var/run/docker.pid"
+		cfg.Root = "/data/docker/var/lib/docker"
+		cfg.ExecRoot = "/data/docker/var/run/docker"
+		cfg.Pidfile = "/data/docker/var/run/docker.pid"
 	}
 
 	return nil
@@ -206,7 +206,7 @@ func lookupBinPath(binary string) (string, error) {
 		"/usr/libexec/docker",
 
 		// FHS 2.3: "/usr/lib includes object files, libraries, and internal binaries that are not intended to be executed directly by users or shell scripts."
-		// https://refspecs.linuxfoundation.org/FHS_2.3/fhs-2.3.html#USRLIBLIBRARIESFORPROGRAMMINGANDPA
+		// https://refspecs.linuxfoundation.org/FHS_2.3/fhs-2.3.html#USRLIBLIBRARIESFORPROGRAMMINGAND
 		"/usr/local/lib/docker",
 		"/usr/lib/docker",
 	}
