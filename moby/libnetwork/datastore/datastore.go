@@ -12,7 +12,7 @@ import (
 )
 
 // ErrKeyModified is raised for an atomic update when the update is working on a stale state
-Var (
+var (
 	ErrKeyModified = store.ErrKeyModified
 	ErrKeyNotFound = store.ErrKeyNotFound
 )
