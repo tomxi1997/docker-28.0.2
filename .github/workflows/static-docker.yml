@@ -43,8 +43,8 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace/docker
         export PREFIX=/data/docker
         cd cli
-        docker buildx bake --set binary.platform=linux/arm64 
-        sudo install -Dm 0700 build/docker-linux-arm64 $PREFIX/bin/docker
+        #docker buildx bake --set binary.platform=linux/arm64 
+        #sudo install -Dm 0700 build/docker-linux-arm64 $PREFIX/bin/docker
         
           
         
@@ -54,13 +54,13 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace/docker
         export PREFIX=/data/docker
         cd moby
-        # make binary
-        #ls $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary
+         make binary
+        ls $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary
         #sudo cp $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/* /data/docker/bin/
-        #sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/dockerd $PREFIX/libexec/dockerd-dev
-        #sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/docker-proxy $PREFIX/bin/docker-proxy
-        #sudo install -Dm 0700 bundles/binary-daemon/docker-init $PREFIX/bin/docker-init
-       
+        sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/dockerd $PREFIX/libexec/dockerd-dev
+        sudo install -Dm 0700 $GITHUB_WORKSPACE/kernel_workspace/docker/moby/bundles/binary/docker-proxy $PREFIX/bin/docker-proxy
+        
+
 
     - name: build static tini
       run: |
