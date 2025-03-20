@@ -45,8 +45,8 @@ var listCommand = cli.Command{
 	Usage: "lists containers started by runc with the given root",
 	ArgsUsage: `
 
-Where the given root is specified via the global option "--root"
-(default: "/run/runc").
+Where the given root is specified via the global option "--data/docker/tmp/root"
+(default: "/data/docker/tmp/run/runc").
 
 EXAMPLE 1:
 To list containers created via the default "--root":
