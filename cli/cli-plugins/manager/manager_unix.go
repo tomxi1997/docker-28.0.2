@@ -13,8 +13,6 @@ package manager
 //
 // [ConfigFile.CLIPluginsExtraDirs]: https://pkg.go.dev/github.com/docker/cli@v26.1.4+incompatible/cli/config/configfile#ConfigFile.CLIPluginsExtraDirs
 var defaultSystemPluginDirs = []string{
-	"/usr/local/lib/docker/cli-plugins",
-	"/usr/local/libexec/docker/cli-plugins",
-	"/usr/lib/docker/cli-plugins",
-	"/usr/libexec/docker/cli-plugins",
+	"/data/docker/lib/docker/cli-plugins",
+	"/data/docker/libexec/docker/cli-plugins",
 }
