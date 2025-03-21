@@ -28,7 +28,7 @@ fi
 
 mkdir -p /data/docker/etc/containerd
 
-cat << EOF | tee /etc/containerd/config.toml
+cat << EOF | tee /data/docker/etc/containerd/config.toml
 version = 2
 
 [plugins."io.containerd.snapshotter.v1.overlayfs"]
